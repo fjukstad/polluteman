@@ -3,7 +3,7 @@ Fetch air pollution data from luftkvalitet.info.
 
 # Example (13.10.2016 at 04:19) 
 ```
-$ polluteman 
+$ polluteman -location=e3b8f62d-ae81-421a-94dc-76afdd9ee822
 Location: Hansjordnesbukta
 	Date: 13.10.2016
 	Time: 03:00
@@ -37,7 +37,10 @@ Usage of polluteman:
     	long hex string that specifies the location of the measurement station you wish to get data from. You'll find it in the end of the url on luftkvalitet.info.  (default "e3b8f62d-ae81-421a-94dc-76afdd9ee822")
 ```
 
+# Todo
+- [ ] Make it possible to use names and not hex strings to look up air quality data. 
+
 # Data
 All data is collected from [luftkvalitet.info](http://luftkvalitet.info), a web
 site developed and hosted by the [Norwegian Institute for Air
-Research](http://nilu.no)
+Research](http://nilu.no). 
