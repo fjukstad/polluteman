@@ -3,68 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
-	"net/http"
-	"strings"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/fjukstad/luftkvalitet"
 )
-
-type Measurement struct {
-	Location     string
-	Component    string
-	Time         string
-	Value        string
-	Date         string
-	DailyAverage string
-	Unit         string
-}
-
-func GetMeasurements(location string) []Measurement {
-
-	resp, err := http.Get("http://luftkvalitet.info/home/overview.aspx?type=Station&id={" + location + "}")
-
-	doc, err := goquery.NewDocumentFromResponse(resp)
-	if err != nil {
-		log.Fatal("Could not parse luftkvalitet.info")
-	}
-
-	measurements := []Measurement{}
-
-	doc.Find("table#ctl00_cph_Map_ctl00_gwStation").Each(func(i int, s *goquery.Selection) {
-		s.Find("tr").Each(func(i int, s *goquery.Selection) {
-			if s.HasClass("tableHead") {
-				return
-			} else {
-				measurement := Measurement{}
-				measurement.Location = doc.Find("#ctl00_cph_Text_ctl00_lTitle").Text()
-				s.Find("td").Each(func(i int, s *goquery.Selection) {
-					text := s.Text()
-					text = strings.TrimSpace(text)
-					switch i {
-					case 0:
-						measurement.Component = text
-					case 1:
-						measurement.Time = text
-					case 2:
-						measurement.Value = text
-					case 3:
-						measurement.Date = text
-					case 4:
-						measurement.DailyAverage = text
-					case 5:
-						measurement.Unit = text
-					}
-				})
-				measurements = append(measurements, measurement)
-			}
-		})
-
-	})
-
-	return measurements
-
-}
 
 func main() {
 
@@ -72,7 +13,13 @@ func main() {
 
 	flag.Parse()
 
-	measurements := GetMeasurements(*location)
+	measurements, err := luftkvalitet.GetMeasurements(*location)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	for _, measurement := range measurements {
 		fmt.Println("Location:", measurement.Location)
 		fmt.Println("\tDate:", measurement.Date)
