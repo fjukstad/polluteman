@@ -3,17 +3,37 @@ package main
 import (
 	"flag"
 	"fmt"
+	"strings"
 
 	"github.com/fjukstad/luftkvalitet"
 )
 
 func main() {
 
-	location := flag.String("location", "e3b8f62d-ae81-421a-94dc-76afdd9ee822", "long hex string that specifies the location of the measurement station you wish to get data from. You'll find it in the end of the url on luftkvalitet.info. ")
+	areas := flag.String("areas", "", "comma separated list of areas of intrest. Leave empty to get a list of all available areas")
 
 	flag.Parse()
 
-	measurements, err := luftkvalitet.GetMeasurements(*location)
+	if *areas == "" {
+		areas, err := luftkvalitet.GetAreas()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println("Available areas:")
+		for _, a := range areas {
+			fmt.Println(a.Area)
+		}
+		return
+	}
+
+	as := strings.Split(strings.TrimSpace(*areas), ",")
+
+	f := luftkvalitet.Filter{
+		Areas: as,
+	}
+
+	measurements, err := luftkvalitet.GetMeasurements(f)
 
 	if err != nil {
 		fmt.Println(err)
@@ -21,11 +41,11 @@ func main() {
 	}
 
 	for _, measurement := range measurements {
-		fmt.Println("Location:", measurement.Location)
-		fmt.Println("\tDate:", measurement.Date)
-		fmt.Println("\tTime:", measurement.Time)
+		fmt.Println("Area:", measurement.Station.Area.Area)
+		fmt.Println("\tStation:", measurement.Station.Station)
+		fmt.Println("\tFrom:", measurement.FromTime)
+		fmt.Println("\tTo:", measurement.ToTime)
 		fmt.Println("\tComponent:", measurement.Component)
 		fmt.Println("\tValue now:", measurement.Value, measurement.Unit)
-		fmt.Println("\tDaily average:", measurement.DailyAverage, measurement.Unit)
 	}
 }

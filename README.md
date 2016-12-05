@@ -1,46 +1,41 @@
 # polluteman
-Fetch air pollution data from luftkvalitet.info. 
+Example application that fetches and prints the latest air quality measurements
+using the [luftkvalitet](http://github.com/fjukstad/luftkvalitet) go package.
 
-# Example (13.10.2016 at 04:19) 
+# Example (4.12.2016 02:48 CET) 
 ```
-$ polluteman -location=e3b8f62d-ae81-421a-94dc-76afdd9ee822
-Location: Hansjordnesbukta
-	Date: 13.10.2016
-	Time: 03:00
+$ polluteman -areas=Tromsø
+Area: Tromsø
+	Station: Tverrforbindelsen
+	From: 2016-12-05 01:00:00 +0100 +0100
+	To: 2016-12-05 02:00:00 +0100 +0100
 	Component: PM10
-	Value now: - µg/m³
-	Daily average: - µg/m³
-Location: Hansjordnesbukta
-	Date: 13.10.2016
-	Time: 03:00
+	Value now: 8.69 µg/m³
+Area: Tromsø
+	Station: Hansjordnesbukta
+	From: 2016-12-05 01:00:00 +0100 +0100
+	To: 2016-12-05 02:00:00 +0100 +0100
+	Component: PM10
+	Value now: 12.54 µg/m³
+Area: Tromsø
+	Station: Hansjordnesbukta
+	From: 2016-12-05 01:00:00 +0100 +0100
+	To: 2016-12-05 02:00:00 +0100 +0100
 	Component: PM2.5
-	Value now: 1,8 µg/m³
-	Daily average: 5,4 µg/m³
-Location: Hansjordnesbukta
-	Date: 13.10.2016
-	Time: 03:00
+	Value now: 5 µg/m³
+Area: Tromsø
+	Station: Hansjordnesbukta
+	From: 2016-12-05 01:00:00 +0100 +0100
+	To: 2016-12-05 02:00:00 +0100 +0100
 	Component: NO2
-	Value now: 9,4 µg/m³
-	Daily average: 47,6 µg/m³
+	Value now: 0.1017298836 µg/m³
 ```
 
 # Install 
 - Install [go](http://golang.org) and set it up accordingly. 
-- Get [goquery](https://github.com/PuerkitoBio/goquery): `go get github.com/PuerkitoBio/goquery`
 - Get [polluteman](https://github.com/fjukstad/polluteman): `go get github.com/fjukstad/polluteman`
 
-# Usage 
-```
-$ polluteman --help
-Usage of polluteman:
-  -location string
-    	long hex string that specifies the location of the measurement station you wish to get data from. You'll find it in the end of the url on luftkvalitet.info.  (default "e3b8f62d-ae81-421a-94dc-76afdd9ee822")
-```
-
-# Todo
-- [ ] Make it possible to use names and not hex strings to look up air quality data. 
-
-# Data
-All data is collected from [luftkvalitet.info](http://luftkvalitet.info), a web
-site developed and hosted by the [Norwegian Institute for Air
-Research](http://nilu.no). 
+# Acknowledgements
+The data belongs to The Norwegian Institute for Air Research (NILU), see
+[luftkvalitet.info](http://www.luftkvalitet.info) and
+[nilu.no](http://www.nilu.no) for more information.  
